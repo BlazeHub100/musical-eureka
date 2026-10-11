@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise & Gift Hub - ศูนย์รวมเว็บเซอร์ไพรส์แฟน & อวยพรเพื่อนฟรี!</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Prompt & Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: linear-gradient(135deg, #fff5f6 0%, #fedac2 50%, #fbe2f1 100%);
+            min-height: 100vh;
+            transition: background 0.5s ease;
+        }
+        body.friends-mode {
+            background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 50%, #f3e8ff 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .floating-anim {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(4deg); }
+        }
+        .pulse-btn {
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+        }
+    </style>
+</head>
+<body id="main-body" class="text-gray-800 pb-16">
+
+    <!-- Navbar Header -->
+    <header class="sticky top-0 z-50 glass-card shadow-sm border-b border-rose-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div id="brand-icon" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-500 flex items-center justify-center text-white text-2xl shadow-lg shadow-rose-200 floating-anim">
+                    <i id="brand-icon-i" class="fa-solid fa-heart"></i>
+                </div>
+                <div>
+                    <h1 id="brand-title" class="text-xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
+                        Surprise & Gift Hub
+                    </h1>
+                    <p class="text-xs text-gray-500 font-light">รวมมิตรการ์ด & เว็บเซอร์ไพรส์แฟนและเพื่อนบน Google</p>
+                </div>
+            </div>
+            
+            <a href="#demo-builder" class="hidden sm:inline-flex items-center gap-2 bg-gradient-to-r from-rose-500 to-pink-500 text-white px-5 py-2.5 rounded-full font-medium text-sm hover:opacity-95 transition shadow-md shadow-rose-200">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>ทดลองทำการ์ด</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Mode Selection Tabs (แฟน vs เพื่อน) -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
+        <div class="glass-card max-w-xl mx-auto p-1.5 rounded-2xl shadow-md border border-white flex gap-2">
+            <button id="mode-btn-lover" onclick="switchMainMode('lover')" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-md">
+                <i class="fa-solid fa-heart"></i>
+                <span>เซอร์ไพรส์แฟน 💕</span>
+            </button>
+            <button id="mode-btn-friends" onclick="switchMainMode('friends')" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all text-gray-600 hover:bg-white/60">
+                <i class="fa-solid fa-user-group text-emerald-500"></i>
+                <span>หมวดเพื่อน / แกล้งเพื่อน 🥳</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+        <!-- Badge -->
+        <div id="hero-badge" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-100/80 text-rose-700 text-sm font-medium mb-4 backdrop-blur-sm">
+            <i id="hero-badge-icon" class="fa-solid fa-gift text-rose-500"></i>
+            <span id="hero-badge-text">คัดสรรเว็บสุดหวานสำหรับคู่รัก อัปเดตล่าสุด</span>
+        </div>
+        
+        <h2 id="hero-heading" class="text-3xl sm:text-5xl font-extrabold text-gray-900 leading-tight mb-4">
+            รวมเว็บ <span id="hero-highlight" class="bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">เซอร์ไพรส์แฟนแบบฟรีๆ</span><br>ฮิตที่สุดบนโลกออนไลน์
+        </h2>
+        <p id="hero-subtext" class="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto mb-8 font-light">
+            อยากทำกล่องของขวัญดิจิทัล, การ์ดขูดรหัสลับ, หรือมินิเว็บไซต์รวมรูปคู่หวานๆ เราวาร์ปรวมทุกเว็บยอดนิยมมาไว้ในที่เดียว!
+        </p>
+
+        <!-- Sub Categories Filter -->
+        <div id="category-filters" class="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-3xl mx-auto">
+            <!-- Dynamic Buttons render via JS -->
+        </div>
+    </section>
+
+    <!-- Websites Showcase Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div id="website-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- ================= LOVER SECTION ITEMS ================= -->
+            
+            <!-- Lover 1: Gifft.me -->
+            <div class="web-card glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-main-mode="lover" data-category="giftbox">
+                <div class="relative h-48 bg-gradient-to-br from-pink-100 to-rose-200 overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=600&auto=format&fit=crop" 
+                         alt="Gifft.me" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                         onerror="this.src='https://placehold.co/600x400/ffe4e6/be123c?text=Gifft.me'">
+                    <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-rose-600 flex items-center gap-1">
+                        <i class="fa-solid fa-fire text-amber-500"></i> ฮิตอันดับ 1
+                    </div>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-bold text-gray-900">Gifft.me</h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-700 font-semibold px-2.5 py-1 rounded-full">ฟรี 100%</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                            สร้างกล่องของขวัญ, ซองจดหมายดนตรี หรือเค้กวันเกิด Interactive ส่งเป็นลิงก์ให้แฟนคลิกเปิดดูอนิเมชันน่ารักๆ พร้อมเพลงประกอบ
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            <span class="text-xs bg-rose-50 text-rose-600 px-2.5 py-1 rounded-lg">กล่องของขวัญ</span>
+                            <span class="text-xs bg-rose-50 text-rose-600 px-2.5 py-1 rounded-lg">ใส่รูปได้</span>
+                            <span class="text-xs bg-rose-50 text-rose-600 px-2.5 py-1 rounded-lg">ส่งลิงก์ง่าย</span>
+                        </div>
+                    </div>
+                    <a href="https://gifft.me" target="_blank" class="w-full py-3 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-center font-medium text-sm transition flex items-center justify-center gap-2 shadow-sm">
+                        <span>ไปที่เว็บไซต์</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Lover 2: Joygram / Scratch Lock -->
+            <div class="web-card glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-main-mode="lover" data-category="scratch">
+                <div class="relative h-48 bg-gradient-to-br from-amber-100 to-rose-200 overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600&auto=format&fit=crop" 
+                         alt="Scratch Card" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                         onerror="this.src='https://placehold.co/600x400/fef3c7/b45309?text=Scratch+Card'">
+                    <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-emerald-600 flex items-center gap-1">
+                        <i class="fa-solid fa-wand-magic"></i> ลูกเล่นขูดการ์ด
+                    </div>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-bold text-gray-900">Scratch & Lock Cards</h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-700 font-semibold px-2.5 py-1 rounded-full">ใช้งานฟรี</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                            เว็บบอกรักสายลับ! ทำการ์ดขูดหาคำตอบ (Scratch Card) หรือใส่ Passcode ให้แฟนไขรหัสลับก่อนจะเปิดดูรูปภาพความประทับใจ
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            <span class="text-xs bg-amber-50 text-amber-600 px-2.5 py-1 rounded-lg">การ์ดขูด</span>
+                            <span class="text-xs bg-amber-50 text-amber-600 px-2.5 py-1 rounded-lg">ใส่รหัสผ่าน</span>
+                        </div>
+                    </div>
+                    <a href="https://google.com/search?q=scratch+card+gift+online+free" target="_blank" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-center font-medium text-sm transition flex items-center justify-center gap-2 shadow-sm">
+                        <span>ค้นหาเว็บการ์ดขูด</span>
+                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Lover 3: Carrd.co -->
+            <div class="web-card glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-main-mode="lover" data-category="mini-site">
+                <div class="relative h-48 bg-gradient-to-br from-blue-100 to-indigo-200 overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600&auto=format&fit=crop" 
+                         alt="Carrd.co" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                         onerror="this.src='https://placehold.co/600x400/dbeafe/1e40af?text=Carrd.co'">
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-bold text-gray-900">Carrd.co</h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-700 font-semibold px-2.5 py-1 rounded-full">ฟรีเวอร์ชัน</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                            สร้างมินิเว็บไซต์หน้าเดียวรวมคอลเลกชันรูปภาพคู่ เขียนเรียงความความในใจ และฝังเพลงจาก Spotify/YouTube ให้แฟนฟัง
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            <span class="text-xs bg-blue-50 text-blue-600 px-2.5 py-1 rounded-lg">สร้างเว็บจริง</span>
+                            <span class="text-xs bg-blue-50 text-blue-600 px-2.5 py-1 rounded-lg">ฝังเพลงโปรด</span>
+                        </div>
+                    </div>
+                    <a href="https://carrd.co" target="_blank" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-center font-medium text-sm transition flex items-center justify-center gap-2 shadow-sm">
+                        <span>ไปที่เว็บไซต์</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Lover 4: Canva Cards -->
+            <div class="web-card glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-main-mode="lover" data-category="design">
+                <div class="relative h-48 bg-gradient-to-br from-purple-100 to-pink-200 overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=600&auto=format&fit=crop" 
+                         alt="Canva" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                         onerror="this.src='https://placehold.co/600x400/f3e8ff/6b21a8?text=Canva'">
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-bold text-gray-900">Canva Cards</h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-700 font-semibold px-2.5 py-1 rounded-full">ใช้งานฟรี</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                            แม่แบบการ์ดวันเกิดแฟนและโบชัวร์บอกรักสำเร็จรูปนับพันแบบ ลากวางรูปคู่ เปลี่ยนฟอนต์ภาษาไทยน่ารักๆ แล้วเซฟเป็นรูปภาพได้ทันที
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            <span class="text-xs bg-purple-50 text-purple-600 px-2.5 py-1 rounded-lg">การ์ดสวยงาม</span>
+                            <span class="text-xs bg-purple-50 text-purple-600 px-2.5 py-1 rounded-lg">พิมพ์ออกมาได้</span>
+                        </div>
+                    </div>
+                    <a href="https://canva.com" target="_blank" class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-center font-medium text-sm transition flex items-center justify-center gap-2 shadow-sm">
+                        <span>ไปที่เว็บไซต์</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                </div>
+            </div>
+
+
+            <!-- ================= FRIENDS SECTION ITEMS ================= -->
+
+            <!-- Friend 1: Kudoboard / Group Card -->
+            <div class="web-card glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-main-mode="friends" data-category="wishes">
+                <div class="relative h-48 bg-gradient-to-br from-emerald-100 to-teal-200 overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&auto=format&fit=crop" 
+                         alt="Group Wishes" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                         onerror="this.src='https://placehold.co/600x400/d1fae5/065f46?text=Group+Card'">
+                    <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-emerald-600 flex items-center gap-1">
+                        <i class="fa-solid fa-users"></i> รวบรวมคำอวยพรยกกลุ่ม
+                    </div>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-bold text-gray-900">Kudoboard & GroupCards</h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-700 font-semibold px-2.5 py-1 rounded-full">ฟรี</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                            เว็บบอร์ดการ์ดวันเกิดกลุ่ม ให้เพื่อนๆ ในแก๊งก๊วนมาช่วยกันโพสต์รูปหลุด, วิดีโออวยพร และเขียนข้อความอวยพรเพื่อนในบอร์ดเดียวกัน!
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            <span class="text-xs bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-lg">ทำเป็นกลุ่ม</span>
+                            <span class="text-xs bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-lg">อวยพรวันเกิด</span>
+                            <span class="text-xs bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-lg">ลงรูปหลุดเพื่อน</span>
+                        </div>
+                    </div>
+                    <a href="https://www.kudoboard.com" target="_blank" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-center font-medium text-sm transition flex items-center justify-center gap-2 shadow-sm">
+                        <span>ไปที่เว็บไซต์</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Friend 2: Meme / Prank Cards -->
+            <div class="web-card glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-main-mode="friends" data-category="prank">
+                <div class="relative h-48 bg-gradient-to-br from-amber-100 to-yellow-200 overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&auto=format&fit=crop" 
+                         alt="Meme Generator" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                         onerror="this.src='https://placehold.co/600x400/fef3c7/92400e?text=Meme+Prank'">
+                    <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-amber-600 flex items-center gap-1">
+                        <i class="fa-solid fa-face-laugh-squint"></i> สายแกงเพื่อน
+                    </div>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-bold text-gray-900">Meme & Prank Gift Creator</h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-700 font-semibold px-2.5 py-1 rounded-full">ฟรี 100%</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                            สร้างมินิการ์ดแกล้งเพื่อนแนวขำๆ โจ๊กๆ เอารูปฮาๆ ของเพื่อนมาตัดใส่เทมเพลตมีมดัง ใส่ข้อความแซวแล้วส่งเข้ากลุ่มไลน์
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            <span class="text-xs bg-amber-50 text-amber-600 px-2.5 py-1 rounded-lg">การ์ดมีม</span>
+                            <span class="text-xs bg-amber-50 text-amber-600 px-2.5 py-1 rounded-lg">แกล้งเพื่อน</span>
+                            <span class="text-xs bg-amber-50 text-amber-600 px-2.5 py-1 rounded-lg">เรียกเสียงหัวเราะ</span>
+                        </div>
+                    </div>
+                    <a href="https://imgflip.com/memegenerator" target="_blank" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-center font-medium text-sm transition flex items-center justify-center gap-2 shadow-sm">
+                        <span>สร้างมีมแกล้งเพื่อน</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Friend 3: Padlet - Memory Board -->
+            <div class="web-card glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-main-mode="friends" data-category="memory">
+                <div class="relative h-48 bg-gradient-to-br from-indigo-100 to-sky-200 overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&auto=format&fit=crop" 
+                         alt="Padlet Memories" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                         onerror="this.src='https://placehold.co/600x400/e0f2fe/0369a1?text=Memory+Board'">
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-bold text-gray-900">Padlet Memory Board</h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-700 font-semibold px-2.5 py-1 rounded-full">กระดานความทรงจำ</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                            กระดานดิจิทัลรวมมิตรความทรงจำกลุ่มเพื่อนต้อนรับวันเรียนจบ วันเกิด หรือปัจฉิม แปะโน้ต รูปภาพ คลิปวิดีโอ และคลิปเสียงร้องเพลงให้เพื่อน
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            <span class="text-xs bg-sky-50 text-sky-600 px-2.5 py-1 rounded-lg">กระดานความทรงจำ</span>
+                            <span class="text-xs bg-sky-50 text-sky-600 px-2.5 py-1 rounded-lg">วันปัจฉิม/วันเกิด</span>
+                        </div>
+                    </div>
+                    <a href="https://padlet.com" target="_blank" class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-center font-medium text-sm transition flex items-center justify-center gap-2 shadow-sm">
+                        <span>ไปที่เว็บไซต์</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Friend 4: Gifft.me Friends Edition -->
+            <div class="web-card glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-main-mode="friends" data-category="wishes">
+                <div class="relative h-48 bg-gradient-to-br from-purple-100 to-indigo-200 overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&auto=format&fit=crop" 
+                         alt="Gifft.me Friends" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                         onerror="this.src='https://placehold.co/600x400/f3e8ff/7e22ce?text=Birthday+Box'">
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-bold text-gray-900">Gifft.me (เค้ก/ของขวัญเพื่อน)</h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-700 font-semibold px-2.5 py-1 rounded-full">ฟรี 100%</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                            ส่งเค้กวันเกิดเสมือนจริงให้เพื่อนเป่าผ่านหน้าจอมือถือ พร้อมซองจดหมายคำอวยพรสุดซึ้งหรือคำกวนๆ ส่งให้เพื่อนในวันสำคัญ
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            <span class="text-xs bg-purple-50 text-purple-600 px-2.5 py-1 rounded-lg">เป่าเค้กดิจิทัล</span>
+                            <span class="text-xs bg-purple-50 text-purple-600 px-2.5 py-1 rounded-lg">การ์ดอวยพรเพื่อน</span>
+                        </div>
+                    </div>
+                    <a href="https://gifft.me" target="_blank" class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-center font-medium text-sm transition flex items-center justify-center gap-2 shadow-sm">
+                        <span>ไปที่เว็บไซต์</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Interactive Surprise Builder (In-house Playground) -->
+    <section id="demo-builder" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="glass-card rounded-3xl p-6 sm:p-10 shadow-xl border border-rose-200">
+            <div class="text-center mb-8">
+                <span id="builder-tag" class="bg-rose-100 text-rose-600 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+                    <i class="fa-solid fa-sparkles"></i> เครื่องมือทดลองสร้างการ์ดเซอร์ไพรส์
+                </span>
+                <h2 id="builder-title" class="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">ทดลองสร้างการ์ดส่งให้แฟน หรือ เพื่อน ได้ทันที!</h2>
+                <p class="text-gray-500 text-sm mt-1">กรอกข้อมูล เลือกสไตล์ และเปลี่ยนรูปภาพเพื่อดูตัวอย่างผลลัพธ์แบบเรียลไทม์</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <!-- Form Inputs -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">ส่งถึงใคร (ชื่อแฟน / ชื่อเพื่อน)</label>
+                        <input type="text" id="input-name" value="ไอ้เกลอสายตะลอน 🥳" oninput="updateCard()" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-rose-400 bg-white/70 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">ข้อความเซอร์ไพรส์ / คำอวยพร / คำแซว</label>
+                        <textarea id="input-msg" rows="3" oninput="updateCard()" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-rose-400 bg-white/70 text-sm">สุขสันต์วันเกิดนะเพื่อนมีความสุขมากๆ สมหวังทุกประการ โตขึ้นอีกปีแล้วนะมึง! 🎉🎁</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">ลิงก์รูปภาพประกอบ (URL รูปภาพ)</label>
+                        <input type="text" id="input-img" value="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&auto=format&fit=crop" oninput="updateCard()" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-rose-400 bg-white/70 text-sm" placeholder="ใส่ URL รูปภาพของคุณ">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">ธีมสีการ์ด</label>
+                        <div class="flex gap-3">
+                            <button onclick="setTheme('rose')" class="w-8 h-8 rounded-full bg-rose-500 ring-2 ring-offset-2 ring-rose-500"></button>
+                            <button onclick="setTheme('emerald')" class="w-8 h-8 rounded-full bg-emerald-500 hover:ring-2 hover:ring-offset-2 hover:ring-emerald-500"></button>
+                            <button onclick="setTheme('purple')" class="w-8 h-8 rounded-full bg-purple-500 hover:ring-2 hover:ring-offset-2 hover:ring-purple-500"></button>
+                            <button onclick="setTheme('amber')" class="w-8 h-8 rounded-full bg-amber-500 hover:ring-2 hover:ring-offset-2 hover:ring-amber-500"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview Area -->
+                <div class="flex flex-col items-center">
+                    <p class="text-xs font-semibold text-gray-400 mb-2">ตัวอย่างหน้าจอที่ผู้รับจะเห็น</p>
+                    <div id="preview-card" class="w-full max-w-xs bg-white rounded-2xl shadow-2xl p-5 border-4 border-rose-200 text-center transition-all duration-300 relative overflow-hidden">
+                        <!-- Secret Gift Overlay -->
+                        <div id="gift-overlay" class="absolute inset-0 bg-gradient-to-tr from-rose-500 to-pink-500 z-10 flex flex-col items-center justify-center p-4 transition-all duration-500">
+                            <div id="gift-icon" class="text-5xl text-white mb-3 floating-anim">🎁</div>
+                            <h4 id="gift-overlay-title" class="text-white font-bold text-lg mb-1">มีของขวัญมาส่ง!</h4>
+                            <p class="text-rose-100 text-xs mb-4">แตะที่นี่เพื่อเปิดอ่านข้อความ</p>
+                            <button onclick="openGift()" class="px-5 py-2 bg-white text-rose-600 rounded-full font-bold text-xs shadow-md pulse-btn hover:scale-105 transition">
+                                คลิกเปิดเซอร์ไพรส์ ✨
+                            </button>
+                        </div>
+
+                        <!-- Card Content inside -->
+                        <div class="relative">
+                            <div class="w-full h-40 rounded-xl overflow-hidden mb-3 bg-rose-50">
+                                <img id="preview-img-display" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&auto=format&fit=crop" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x300/ffe4e6/be123c?text=Your+Photo'">
+                            </div>
+                            <h3 id="preview-name-display" class="font-bold text-lg text-rose-600 mb-1">ไอ้เกลอสายตะลอน 🥳</h3>
+                            <p id="preview-msg-display" class="text-xs text-gray-600 leading-relaxed mb-4">สุขสันต์วันเกิดนะเพื่อนมีความสุขมากๆ สมหวังทุกประการ โตขึ้นอีกปีแล้วนะมึง! 🎉🎁</p>
+                            
+                            <button onclick="resetGift()" class="text-[11px] text-gray-400 underline hover:text-rose-500">
+                                ปิดกล่องทดลองใหม่
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script>
+        let currentMainMode = 'lover'; // 'lover' or 'friends'
+
+        // Lover Subcategories
+        const loverCategories = [
+            { id: 'all', label: 'ทั้งหมด', icon: 'fa-border-all' },
+            { id: 'giftbox', label: 'กล่องของขวัญ / Animation', icon: 'fa-box-open text-amber-500' },
+            { id: 'scratch', label: 'การ์ดขูด / ใส่รหัส', icon: 'fa-key text-emerald-500' },
+            { id: 'mini-site', label: 'มินิเว็บไซต์บอกรัก', icon: 'fa-globe text-blue-500' },
+            { id: 'design', label: 'ออกแบบการ์ดรูปภาพ', icon: 'fa-palette text-purple-500' }
+        ];
+
+        // Friends Subcategories
+        const friendsCategories = [
+            { id: 'all', label: 'ทั้งหมด', icon: 'fa-border-all' },
+            { id: 'wishes', label: 'อวยพรวันเกิดเพื่อน', icon: 'fa-cake-candles text-pink-500' },
+            { id: 'prank', label: 'แกล้งเพื่อน / มีมขำๆ', icon: 'fa-face-laugh-wink text-amber-500' },
+            { id: 'memory', label: 'กระดานความทรงจำกลุ่ม', icon: 'fa-images text-indigo-500' }
+        ];
+
+        function switchMainMode(mode) {
+            currentMainMode = mode;
+            const body = document.getElementById('main-body');
+            const loverBtn = document.getElementById('mode-btn-lover');
+            const friendsBtn = document.getElementById('mode-btn-friends');
+            const brandTitle = document.getElementById('brand-title');
+            const brandIcon = document.getElementById('brand-icon');
+            const brandIconI = document.getElementById('brand-icon-i');
+
+            if(mode === 'lover') {
+                body.classList.remove('friends-mode');
+                loverBtn.className = "flex-1 py-3 px-4 rounded-xl font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-md";
+                friendsBtn.className = "flex-1 py-3 px-4 rounded-xl font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all text-gray-600 hover:bg-white/60";
+
+                brandTitle.innerText = "Surprise Lover Hub";
+                brandTitle.className = "text-xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent";
+                brandIcon.className = "w-12 h-12 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-500 flex items-center justify-center text-white text-2xl shadow-lg shadow-rose-200 floating-anim";
+                brandIconI.className = "fa-solid fa-heart";
+
+                document.getElementById('hero-badge').className = "inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-100/80 text-rose-700 text-sm font-medium mb-4 backdrop-blur-sm";
+                document.getElementById('hero-badge-icon').className = "fa-solid fa-gift text-rose-500";
+                document.getElementById('hero-badge-text').innerText = "คัดสรรเว็บสุดหวานสำหรับคู่รัก อัปเดตล่าสุด";
+
+                document.getElementById('hero-heading').innerHTML = 'รวมเว็บ <span class="bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">เซอร์ไพรส์แฟนแบบฟรีๆ</span><br>ฮิตที่สุดบนโลกออนไลน์';
+                document.getElementById('hero-subtext').innerText = "อยากทำกล่องของขวัญดิจิทัล, การ์ดขูดรหัสลับ, หรือมินิเว็บไซต์รวมรูปคู่หวานๆ เราวาร์ปรวมทุกเว็บยอดนิยมมาไว้ในที่เดียว!";
+
+                renderSubCategories(loverCategories);
+                setTheme('rose');
+            } else {
+                body.classList.add('friends-mode');
+                friendsBtn.className = "flex-1 py-3 px-4 rounded-xl font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md";
+                loverBtn.className = "flex-1 py-3 px-4 rounded-xl font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all text-gray-600 hover:bg-white/60";
+
+                brandTitle.innerText = "Friends Surprise Hub";
+                brandTitle.className = "text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent";
+                brandIcon.className = "w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center text-white text-2xl shadow-lg shadow-emerald-200 floating-anim";
+                brandIconI.className = "fa-solid fa-user-group";
+
+                document.getElementById('hero-badge').className = "inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100/80 text-emerald-700 text-sm font-medium mb-4 backdrop-blur-sm";
+                document.getElementById('hero-badge-icon').className = "fa-solid fa-face-smile text-emerald-500";
+                document.getElementById('hero-badge-text').innerText = "รวมไอเดียอวยพรเพื่อน & แกล้งเพื่อนในแก๊ง";
+
+                document.getElementById('hero-heading').innerHTML = 'รวมเว็บ <span class="bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500 bg-clip-text text-transparent">เซอร์ไพรส์ & แกล้งเพื่อน</span><br>ฮาๆ และอบอุ่นใจฟรี!';
+                document.getElementById('hero-subtext').innerText = "รวมการ์ดวันเกิดกลุ่มเพื่อน, บอร์ดความทรงจำปัจฉิม, และเว็บสร้างมีมแกล้งเพื่อนสุดฮา ส่งเข้ากลุ่มไลน์ได้ทันที!";
+
+                renderSubCategories(friendsCategories);
+                setTheme('emerald');
+            }
+
+            filterCategory('all');
+        }
+
+        function renderSubCategories(categories) {
+            const container = document.getElementById('category-filters');
+            container.innerHTML = categories.map((cat, idx) => `
+                <button onclick="filterCategory('${cat.id}')" class="cat-btn ${idx === 0 ? 'active bg-gray-800 text-white shadow-md' : 'bg-white/80 hover:bg-white text-gray-700'} px-4 py-2 rounded-xl font-medium text-xs sm:text-sm transition">
+                    <i class="fa-solid ${cat.icon} mr-1.5"></i> ${cat.label}
+                </button>
+            `).join('');
+        }
+
+        function filterCategory(subCategory) {
+            const cards = document.querySelectorAll('.web-card');
+            const buttons = document.querySelectorAll('.cat-btn');
+
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-gray-800', 'text-white', 'shadow-md');
+                btn.classList.add('bg-white/80', 'text-gray-700');
+            });
+
+            if(event && event.currentTarget) {
+                event.currentTarget.classList.remove('bg-white/80', 'text-gray-700');
+                event.currentTarget.classList.add('bg-gray-800', 'text-white', 'shadow-md');
+            }
+
+            cards.forEach(card => {
+                const cardMainMode = card.getAttribute('data-main-mode');
+                const cardSubCat = card.getAttribute('data-category');
+
+                if (cardMainMode === currentMainMode && (subCategory === 'all' || cardSubCat === subCategory)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Live preview updates
+        function updateCard() {
+            const name = document.getElementById('input-name').value || 'ชื่อผู้รับ...';
+            const msg = document.getElementById('input-msg').value || 'ใส่ข้อความของคุณตรงนี้...';
+            const imgUrl = document.getElementById('input-img').value || 'https://placehold.co/400x300/ffe4e6/be123c?text=Your+Photo';
+
+            document.getElementById('preview-name-display').innerText = name;
+            document.getElementById('preview-msg-display').innerText = msg;
+            document.getElementById('preview-img-display').src = imgUrl;
+        }
+
+        // Open Gift Animation
+        function openGift() {
+            const overlay = document.getElementById('gift-overlay');
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+            overlay.style.transform = 'scale(1.1)';
+        }
+
+        function resetGift() {
+            const overlay = document.getElementById('gift-overlay');
+            overlay.style.opacity = '1';
+            overlay.style.pointerEvents = 'auto';
+            overlay.style.transform = 'scale(1)';
+        }
+
+        // Color Theme Switcher for Interactive Card
+        function setTheme(theme) {
+            const card = document.getElementById('preview-card');
+            const name = document.getElementById('preview-name-display');
+            const overlay = document.getElementById('gift-overlay');
+
+            if(theme === 'rose') {
+                card.className = "w-full max-w-xs bg-white rounded-2xl shadow-2xl p-5 border-4 border-rose-200 text-center transition-all duration-300 relative overflow-hidden";
+                name.className = "font-bold text-lg text-rose-600 mb-1";
+                overlay.className = "absolute inset-0 bg-gradient-to-tr from-rose-500 to-pink-500 z-10 flex flex-col items-center justify-center p-4 transition-all duration-500";
+            } else if(theme === 'emerald') {
+                card.className = "w-full max-w-xs bg-white rounded-2xl shadow-2xl p-5 border-4 border-emerald-200 text-center transition-all duration-300 relative overflow-hidden";
+                name.className = "font-bold text-lg text-emerald-600 mb-1";
+                overlay.className = "absolute inset-0 bg-gradient-to-tr from-emerald-500 to-teal-600 z-10 flex flex-col items-center justify-center p-4 transition-all duration-500";
+            } else if(theme === 'purple') {
+                card.className = "w-full max-w-xs bg-white rounded-2xl shadow-2xl p-5 border-4 border-purple-200 text-center transition-all duration-300 relative overflow-hidden";
+                name.className = "font-bold text-lg text-purple-600 mb-1";
+                overlay.className = "absolute inset-0 bg-gradient-to-tr from-purple-600 to-indigo-500 z-10 flex flex-col items-center justify-center p-4 transition-all duration-500";
+            } else if(theme === 'amber') {
+                card.className = "w-full max-w-xs bg-white rounded-2xl shadow-2xl p-5 border-4 border-amber-200 text-center transition-all duration-300 relative overflow-hidden";
+                name.className = "font-bold text-lg text-amber-600 mb-1";
+                overlay.className = "absolute inset-0 bg-gradient-to-tr from-amber-500 to-orange-500 z-10 flex flex-col items-center justify-center p-4 transition-all duration-500";
+            }
+        }
+
+        // Initialize default view
+        window.onload = function() {
+            switchMainMode('lover');
+        };
+    </script>
+</body>
+</html>
